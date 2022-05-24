@@ -1,4 +1,4 @@
-# k8s-at-home-with-k3s (Work in Progress)
+# k8s-at-home (Work in Progress)
 Kubernetes at home with K3s
 
 
