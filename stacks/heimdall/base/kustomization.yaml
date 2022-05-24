@@ -1,0 +1,11 @@
+namespace: heimdall
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- deployment.yaml
+- ingress.yaml
+- namespace.yaml
+- service.yaml
+images:
+- name: lscr.io/linuxserver/heimdall
+  newTag: "2.4.12"

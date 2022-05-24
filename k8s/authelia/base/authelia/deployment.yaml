@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authelia-server
+  namespace: authelia
+  labels:
+    app: authelia-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: authelia-server
+  template:
+    metadata:
+      labels:
+        app: authelia-server
+    spec:
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 10
+      enableServiceLinks: false
+      containers:
+      - name: authelia-server
+        image: authelia/authelia:4
+        ports:
+        - name: http
+          containerPort: 9091
+        resources:
+          limits:
+            memory: "100Mi"
+          requests:
+            memory: "50Mi"
+        volumeMounts:
+        - name: config
+          readOnly: false
+          mountPath: "/config"
+        imagePullPolicy: IfNotPresent
+      volumes:
+      - name: config
+        secret:
+          secretName: authelia-config

@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ddclient
+  namespace: ddclient
+  labels:
+    app: ddclient
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ddclient
+  template:
+    metadata:
+      labels:
+        app: ddclient
+    spec:
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: ddclient
+        image: lscr.io/linuxserver/ddclient:3.9.1
+        resources:
+          limits:
+            memory: "100Mi"
+          requests:
+            memory: "50Mi"
+        volumeMounts:
+        - name: config
+          readOnly: false
+          mountPath: "/config"
+        imagePullPolicy: IfNotPresent
+      volumes:
+      - name: config
+        secret:
+          secretName: ddclient-config

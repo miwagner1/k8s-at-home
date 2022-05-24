@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: diun
+  namespace: diun
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: diun
+  template:
+    metadata:
+      labels:
+        app: diun
+      annotations:
+        diun.enable: "true"
+    spec:
+      restartPolicy: Always
+      serviceAccountName: diun
+      containers:
+      - name: diun
+        image: crazymax/diun:4.21.0
+        args: ["serve"]
+        env:
+        - name: TZ
+          value: "America/Chicago"
+        - name: LOG_LEVEL
+          value: "info"
+        - name: LOG_JSON
+          value: "false"
+        - name: DIUN_WATCH_WORKERS
+          value: "20"
+        - name: DIUN_WATCH_SCHEDULE
+          value: "0 */12 * * *"
+        - name: DIUN_PROVIDERS_KUBERNETES
+          value: "true"
+        - name: DIUN_NOTIF_PUSHOVER_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: environmentvariables
+              key: pushover.secret
+              optional: false
+        - name: DIUN_NOTIF_PUSHOVER_RECIPIENT
+          valueFrom:
+            secretKeyRef:
+              name: environmentvariables
+              key: pushover.username
+              optional: false
+        volumeMounts:
+        - name: "data"
+          mountPath: "/data"
+        imagePullPolicy: IfNotPresent
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: diun-pvc
+  strategy:
+    type: Recreate

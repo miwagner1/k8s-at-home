@@ -1,0 +1,10 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: tanoshi
+  namespace: tanoshi
+spec:
+  template:
+    metadata:
+      annotations:
+        diun.enable: "true"

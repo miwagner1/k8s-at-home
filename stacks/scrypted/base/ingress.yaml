@@ -1,0 +1,18 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: scrypted
+  namespace: scrypted
+spec:
+  entryPoints:
+  - websecure
+  routes:
+  - kind: Rule
+    match: Host(`your.domain.com`)
+    middlewares:
+    - name: chain-authelia
+      namespace: default
+    services:
+    - name: scrypted
+      namespace: scrypted
+      port: 11080

@@ -1,0 +1,21 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ../../base
+patchesJson6902:
+- path: ingress-patch.yaml
+  target:
+    name: znc
+    namespace: znc
+    kind: IngressRoute
+    group: "traefik.containo.us"
+    version: v1alpha1
+- path: ingress-tcp-patch.yaml
+  target:
+    name: znc
+    namespace: znc
+    kind: IngressRouteTCP
+    group: "traefik.containo.us"
+    version: v1alpha1
+patchesStrategicMerge:
+- deployment.yaml

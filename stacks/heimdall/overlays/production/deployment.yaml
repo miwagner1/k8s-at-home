@@ -1,0 +1,10 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: heimdall
+  namespace: heimdall
+spec:
+  template:
+    metadata:
+      annotations:
+        diun.enable: "true"

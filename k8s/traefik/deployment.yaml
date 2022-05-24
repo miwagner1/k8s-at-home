@@ -1,0 +1,66 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: traefik
+  namespace: kube-system
+spec:
+  chart: traefik
+  repo: https://helm.traefik.io/traefik
+  targetNamespace: traefik
+  valuesContent: |-
+    rbac:
+      enabled: true
+    providers:
+      kubernetesCRD:
+        enabled: true
+        allowCrossNamespace: true
+      kubernetesIngress:
+        publishedService:
+          enabled: true
+    podAnnotations:
+      prometheus.io/port: "8082"
+      prometheus.io/scrape: "true"
+    priorityClassName: "system-cluster-critical"
+    tolerations:
+    - key: "CriticalAddonsOnly"
+      operator: "Exists"
+    - key: "node-role.kubernetes.io/control-plane"
+      operator: "Exists"
+      effect: "NoSchedule"
+    - key: "node-role.kubernetes.io/master"
+      operator: "Exists"
+      effect: "NoSchedule"
+    logs:
+      general:
+        level: ERROR
+      access:
+        enabled: false
+    image:
+      name: traefik
+      tag: v2.6.1
+    ports:
+      web:
+        redirectTo: websecure
+        port: 8000
+        expose: true
+        exposedPort: 80
+        protocol: TCP
+      websecure:
+        http3: false
+        tls:
+          enabled: true
+      irc:
+        port: 16501
+        expose: true
+        exposedPort: 6501
+        protocol: TCP
+    service:
+      enabled: true
+      annotations:
+        metallb.universe.tf/allow-shared-ip: "key-to-share-192.168.4.20"
+        metallb.universe.tf/loadBalancerIPs: "192.168.4.20"
+      spec:
+        externalTrafficPolicy: Local
+    experimental:
+     http3:
+       enabled: false

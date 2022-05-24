@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: homeassistant
+  namespace: homeassistant
+  labels:
+    app: homeassistant
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: homeassistant
+  template:
+    metadata:
+      labels:
+        app: homeassistant
+    spec:
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 10
+      dnsPolicy: ClusterFirstWithHostNet
+      hostNetwork: true
+      containers:
+      - name: homeassistant
+        image: ghcr.io/home-assistant/home-assistant:2022.4.7
+        ports:
+        - name: http
+          containerPort: 8123
+        resources:
+          limits:
+            memory: "600Mi"
+          requests:
+            memory: "300Mi"
+        volumeMounts:
+        - name: data
+          readOnly: false
+          mountPath: "/config"
+        livenessProbe:
+          exec:
+            command:
+            - ls
+            - /config/lost+found
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          privileged: true
+      - name: openssh-server
+        image: lscr.io/linuxserver/openssh-server:8.8_p1-r1-ls80
+        ports:
+        - name: ssh
+          containerPort: 2222
+        env:
+        - name: PUID
+          value: "1000"
+        - name: PGID
+          value: "1000"
+        - name: TZ
+          value: "America/Chicago"
+        volumeMounts:
+        - name: data
+          readOnly: false
+          mountPath: "/homeassistent"
+        imagePullPolicy: IfNotPresent
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      resources:
+        requests:
+          storage: 25Gi
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: "longhorn"
+  serviceName: "homeassistant"

@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mariadb
+  namespace: authelia
+  labels:
+    app: mariadb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mariadb
+  template:
+    metadata:
+      labels:
+        app: mariadb
+    spec:
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 10
+      enableServiceLinks: false
+      containers:
+      - name: mariadb
+        image: lscr.io/linuxserver/mariadb:10.5.15
+        ports:
+        - name: tcp
+          containerPort: 3306
+        env:
+        - name: PUID
+          valueFrom:
+            secretKeyRef:
+              name: env-secrets
+              key: PUID
+        - name: PGID
+          valueFrom:
+            secretKeyRef:
+              name: env-secrets
+              key: PGID
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: env-secrets
+              key: MYSQL_ROOT_PASSWORD
+        - name: TZ
+          valueFrom:
+            secretKeyRef:
+              name: env-secrets
+              key: TZ
+        - name: MYSQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: env-secrets
+              key: MYSQL_DATABASE
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: env-secrets
+              key: MYSQL_USER
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: env-secrets
+              key: MYSQL_PASSWORD
+        resources:
+          limits:
+            memory: "200Mi"
+          requests:
+            memory: "50Mi"
+        volumeMounts:
+        - name: mariadb-data
+          readOnly: false
+          mountPath: "/config"
+        livenessProbe:
+          exec:
+            command:
+            - ls
+            - /config/lost+found
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        imagePullPolicy: IfNotPresent
+  volumeClaimTemplates:
+  - metadata:
+      name: mariadb-data
+    spec:
+      resources:
+        requests:
+          storage: 2Gi
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: "longhorn"
+  serviceName: "mariadb"

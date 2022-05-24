@@ -1,0 +1,10 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ddclient
+  namespace: ddclient
+spec:
+  template:
+    metadata:
+      annotations:
+        diun.enable: "true"

@@ -1,0 +1,104 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: chain-authelia
+  namespace: default
+spec:
+  chain:
+    middlewares:
+    - name: rate-limit
+    - name: secure-headers
+    - name: compress
+    - name: authelia
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: chain-secure
+  namespace: default
+spec:
+  chain:
+    middlewares:
+    - name: rate-limit
+    - name: secure-headers
+    - name: compress
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: rate-limit
+  namespace: default
+spec:
+  rateLimit:
+    average: 100
+    burst: 50
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: redirect-https
+  namespace: default
+spec:
+  redirectScheme:
+    permanent: true
+    scheme: https
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: secure-headers
+  namespace: default
+spec:
+  headers:
+    accessControlAllowMethods:
+    - GET
+    - OPTIONS
+    - PUT
+    accessControlMaxAge: 100
+    browserXssFilter: true
+    contentTypeNosniff: true
+    # frameDeny: true #overwritten by customFrameOptionsValue
+    customFrameOptionsValue: "allow-from https:vmnode.com" #CSP takes care of this but may be needed for organizr.
+    customResponseHeaders:
+      X-Robots-Tag: "none,noarchive,nosnippet,notranslate,noimageindex,"
+      server: ""
+      # https://community.traefik.io/t/how-to-make-websockets-work-with-traefik-2-0-setting-up-rancher/1732
+      # X-Forwarded-Proto: "https"
+    forceSTSHeader: true
+    hostsProxyHeaders:
+    - "X-Forwarded-Host"
+    # Setting contentSecurityPolicy is more secure but it can break things. Proper auth will reduce the risk.
+    # the below line also breaks some apps due to 'none' - sonarr, radarr, etc.
+    # contentSecurityPolicy: "frame-ancestors '*.example.com:*';object-src 'none';script-src 'none';"
+    # Line below, featurePolicy, was deprecated in v2.5.x in favor permissionPolicy
+    # featurePolicy: "camera 'none'; geolocation 'none'; microphone 'none'; payment 'none'; usb 'none'; vr 'none';"
+    permissionsPolicy: "camera=(), microphone=(), geolocation=(), payment=(), usb=(), vr=()"
+    # sslForceHost: true # add sslHost to all of the services
+    # sslHost: "example.com"
+    referrerPolicy: "same-origin"
+    sslRedirect: true #replaced with middlewares-https-redirectscheme for v2.5.x
+    stsIncludeSubdomains: true
+    stsPreload: true
+    stsSeconds: 63072000
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: compress
+  namespace: default
+spec:
+  compress: {}
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: authelia
+  namespace: default
+spec:
+  forwardAuth:
+    address: "http://authelia-server.authelia.svc:9091/api/verify?rd=https://login.vmnode.com"
+    authResponseHeaders:
+    - "Remote-User"
+    - "Remote-Group"
+    - "Remote-Email"
+    trustForwardHeader: true

@@ -1,0 +1,10 @@
+namespace: authelia
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- deployment.yaml
+- ingress.yaml
+- service.yaml
+images:
+- name: authelia/authelia
+  newTag: "4"

@@ -1,0 +1,18 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: authelia
+  namespace: authelia
+spec:
+  entryPoints:
+  - websecure
+  routes:
+  - kind: Rule
+    match: Host(`login.vmnode.com`)
+    middlewares:
+    - name: chain-secure
+      namespace: default
+    services:
+    - name: authelia-server
+      namespace: authelia
+      port: 9091

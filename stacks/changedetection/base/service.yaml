@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: changedetection
+  namespace: changedetection
+  labels:
+    name: changedetection
+spec:
+  selector:
+    app: changedetection
+  ports:
+  - name: http
+    protocol: TCP
+    port: 5000
+    targetPort: 5000

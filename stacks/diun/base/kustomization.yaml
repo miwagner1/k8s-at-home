@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- clusterrole.yaml
+- clusterrolebinding.yaml
+- deployment.yaml
+- namespace.yaml
+- persistentvolumeclaim.yaml
+- serviceaccount.yaml
+images:
+- name: crazymax/diun
+  newTag: "4.21.0"

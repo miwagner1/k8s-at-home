@@ -1,0 +1,11 @@
+namespace: tanoshi
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- deployment.yaml
+- ingress.yaml
+- namespace.yaml
+- service.yaml
+images:
+- name: faldez/tanoshi
+  newTag: "0.28.1"

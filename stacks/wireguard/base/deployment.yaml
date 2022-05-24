@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: wireguard
+  namespace: wireguard
+  labels:
+    app: wireguard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wireguard
+  template:
+    metadata:
+      labels:
+        app: wireguard
+    spec:
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: wireguard
+        image: docker.io/linuxserver/wireguard:1.0.20210914
+        ports:
+        - name: udp
+          containerPort: 51820
+        envFrom:
+        - configMapRef:
+            name: wireguard-configmap
+        resources:
+          limits:
+            memory: "128Mi"
+          requests:
+            memory: "64Mi"
+        volumeMounts:
+        - name: wg-config
+          readOnly: false
+          mountPath: "/config"
+        - name: host-volumes
+          mountPath: /lib/modules
+        livenessProbe:
+          exec:
+            command:
+            - ls
+            - /config/lost+found
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          capabilities:
+            add:
+            - NET_ADMIN
+            - SYS_MODULE
+          privileged: true
+      volumes:
+      - name: host-volumes
+        hostPath:
+          type: Directory
+          path: /lib/modules
+  volumeClaimTemplates:
+  - metadata:
+      name: wg-config
+    spec:
+      resources:
+        requests:
+          storage: 2Gi
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: "longhorn"
+  serviceName: "wireguard"

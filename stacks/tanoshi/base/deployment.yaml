@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: tanoshi
+  namespace: tanoshi
+  labels:
+    app: tanoshi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tanoshi
+  template:
+    metadata:
+      labels:
+        app: tanoshi
+    spec:
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: tanoshi
+        image: faldez/tanoshi:0.28.1
+        ports:
+        - name: http
+          containerPort: 80
+        resources:
+          limits:
+            memory: "400Mi"
+          requests:
+            memory: "200Mi"
+        volumeMounts:
+        - name: volv
+          readOnly: false
+          mountPath: "/tanoshi"
+        livenessProbe:
+          httpGet:
+            port: 80
+            path: /health
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        imagePullPolicy: IfNotPresent
+  volumeClaimTemplates:
+  - metadata:
+      name: volv
+    spec:
+      resources:
+        requests:
+          storage: 80Gi
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: "longhorn"
+  serviceName: "tanoshi"

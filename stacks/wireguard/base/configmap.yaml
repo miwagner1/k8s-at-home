@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: wireguard-configmap
+  namespace: wireguard
+data:
+  ALLOWEDIPS: "192.168.4.0/22"
+  INTERNAL_SUBNET: "10.13.13.0"
+  PEERDNS: "auto"
+  PEERS: "5"
+  PGID: "1000"
+  PUID: "1000"
+  SERVERPORT: "51820"
+  SERVERURL: "vpn.vmnode.com"
+  TZ: "America/Chicago"

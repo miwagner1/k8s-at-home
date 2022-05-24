@@ -1,0 +1,26 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: kubenav
+  namespace: kubenav
+spec:
+  entryPoints:
+  - websecure
+  routes:
+  - kind: Rule
+    match: Host(`your.domain.com`)
+    middlewares:
+    - name: rate-limit
+      namespace: default
+    - name: redirect-https
+      namespace: default
+    - name: secure-headers
+      namespace: default
+    - name: compress
+      namespace: default
+    - name: authelia
+      namespace: default
+    services:
+    - name: kubenav
+      namespace: kubenav
+      port: 14122

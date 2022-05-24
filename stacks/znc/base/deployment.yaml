@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: znc
+  namespace: znc
+  labels:
+    app: znc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: znc
+  template:
+    metadata:
+      labels:
+        app: znc
+    spec:
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: znc
+        image: lscr.io/linuxserver/znc:1.8.2
+        ports:
+        - name: irc
+          containerPort: 6501
+        - name: http
+          containerPort: 6502
+        resources:
+          limits:
+            memory: "100Mi"
+          requests:
+            memory: "50Mi"
+        volumeMounts:
+        - name: volv
+          readOnly: false
+          mountPath: "/config"
+        livenessProbe:
+          exec:
+            command:
+            - ls
+            - /config/lost+found
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        imagePullPolicy: IfNotPresent
+  volumeClaimTemplates:
+  - metadata:
+      name: volv
+    spec:
+      resources:
+        requests:
+          storage: 2Gi
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: "longhorn"
+  serviceName: "znc"

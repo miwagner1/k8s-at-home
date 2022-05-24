@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: thelounge
+  namespace: thelounge
+  labels:
+    app: thelounge
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: thelounge
+  template:
+    metadata:
+      labels:
+        app: thelounge
+    spec:
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: thelounge
+        image: lscr.io/linuxserver/thelounge:4.3.1
+        ports:
+        - name: http
+          containerPort: 9000
+        resources:
+          limits:
+            memory: "350Mi"
+          requests:
+            memory: "120Mi"
+        volumeMounts:
+        - name: volv
+          readOnly: false
+          mountPath: "/config"
+        livenessProbe:
+          exec:
+            command:
+            - ls
+            - /config/lost+found
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        imagePullPolicy: IfNotPresent
+  volumeClaimTemplates:
+  - metadata:
+      name: volv
+    spec:
+      resources:
+        requests:
+          storage: 3Gi
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: "longhorn"
+  serviceName: "thelounge"

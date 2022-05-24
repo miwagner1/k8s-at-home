@@ -1,0 +1,9 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: kubenav
+  namespace: kubenav
+spec:
+  chart: kubenav
+  repo: https://kubenav.github.io/helm-repository
+  targetNamespace: kubenav

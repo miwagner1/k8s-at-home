@@ -1,0 +1,11 @@
+namespace: scrypted
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- deployment.yaml
+- ingress.yaml
+- namespace.yaml
+- service.yaml
+images:
+- name: koush/scrypted
+  newTag: "v0.0.177"
