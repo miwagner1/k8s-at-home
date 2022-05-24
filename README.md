@@ -41,7 +41,7 @@ Redis host for authelia is redis.authelia.svc.cluster.local
 authelia will err out untill you eddit the config file on the longhorn storage (to do, change to a configmap)
 ## Start Deploying The Apps You Want
 Do not forget to review and change the configs as needed.
-deploy an app with ```sudo kubectl apply -k stacks/appnamehere/overlays/production/```
+deploy an app with ```sudo kubectl apply -k stacks/appnamehere```
 
 ### to do
 Make dev deployments for local vm development.
