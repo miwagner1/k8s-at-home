@@ -51,15 +51,34 @@ spec:
           containerPort: 2222
         env:
         - name: PUID
-          value: "1000"
+          valueFrom:
+            secretKeyRef:
+              name: env-secrets
+              key: PUID
         - name: PGID
-          value: "1000"
+          valueFrom:
+            secretKeyRef:
+              name: env-secrets
+              key: PGID
         - name: TZ
-          value: "America/Chicago"
+          valueFrom:
+            secretKeyRef:
+              name: env-secrets
+              key: TZ
+        - name: PUBLIC_KEY
+          valueFrom:
+            secretKeyRef:
+              name: env-secrets
+              key: PUBLIC_KEY
+        - name: USER_NAME
+          valueFrom:
+            secretKeyRef:
+              name: env-secrets
+              key: USER_NAME
         volumeMounts:
         - name: data
           readOnly: false
-          mountPath: "/homeassistent"
+          mountPath: "/config"
         imagePullPolicy: IfNotPresent
   volumeClaimTemplates:
   - metadata:

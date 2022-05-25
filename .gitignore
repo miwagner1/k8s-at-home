@@ -22,3 +22,4 @@
 /stacks/whoami/overlays/production/ingress-patch.yaml
 /stacks/znc/overlays/production/ingress-tcp-patch.yaml
 /stacks/znc/overlays/production/ingress-patch.yaml
+/stacks/homeassistant/overlays/production/env.txt

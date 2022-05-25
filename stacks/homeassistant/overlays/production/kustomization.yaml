@@ -12,3 +12,9 @@ patchesJson6902:
     version: v1alpha1
 patchesStrategicMerge:
 - deployment.yaml
+secretGenerator:
+- name: env-secrets
+  namespace: homeassistant
+  envs:
+  - env.txt
+  type: Opaque
