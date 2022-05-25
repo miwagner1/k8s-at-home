@@ -27,9 +27,9 @@ spec:
           containerPort: 11080
         resources:
           limits:
-            memory: "1200Mi"
+            memory: "800Mi"
           requests:
-            memory: "600Mi"
+            memory: "500Mi"
         volumeMounts:
         - name: volv
           readOnly: false
