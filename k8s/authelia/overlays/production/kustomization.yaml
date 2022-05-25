@@ -6,12 +6,6 @@ resources:
 secretGenerator:
 - name: env-secrets
   namespace: authelia
-  files:
-  - secret/MYSQL_DATABASE
-  - secret/MYSQL_PASSWORD
-  - secret/MYSQL_ROOT_PASSWORD
-  - secret/MYSQL_USER
-  - secret/PGID
-  - secret/PUID
-  - secret/REDIS_PASS
-  - secret/TZ
+  envs:
+  - env.txt
+  type: Opaque

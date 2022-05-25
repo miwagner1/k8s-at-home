@@ -1,9 +1,4 @@
 /kustomize
-/k8s/authelia/overlays/production/secret/MYSQL_DATABASE
-/k8s/authelia/overlays/production/secret/MYSQL_PASSWORD
-/k8s/authelia/overlays/production/secret/MYSQL_ROOT_PASSWORD
-/k8s/authelia/overlays/production/secret/MYSQL_USER
-/k8s/authelia/overlays/production/secret/REDIS_PASS
 /k8s/authelia/overlays/production/authelia-config.yaml
 /k8s/cert-manager/cloudflare-secret.yml
 /k8s/cert-manager/letsencrypt.yaml
@@ -23,3 +18,4 @@
 /stacks/znc/overlays/production/ingress-tcp-patch.yaml
 /stacks/znc/overlays/production/ingress-patch.yaml
 /stacks/homeassistant/overlays/production/env.txt
+/k8s/authelia/overlays/production/env.txt
