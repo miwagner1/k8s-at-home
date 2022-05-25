@@ -46,9 +46,16 @@ deploy an app with ```sudo kubectl apply -k stacks/appnamehere```
 ### to do
 Make dev deployments for local vm development.
 
-## edit files inside longhorn volume (need to find a better way later)
-One way is to use https://github.com/dperson/samba as a second container in the pod, I will be doing this for Home Assistant.
+## Edit files inside longhorn volume
+I chose ssh due to better security than samba and because mounting the samba share on iOS had issues of files/folders disappearing/appearing needing to refresh the directory to show everything etc…  
+Apps used on iOS:  
+[‎SSH Client - Files & Terminal on the App Store](https://apps.apple.com/us/app/ssh-client-files-terminal/id1336634154)  
+[‎Textastic Code Editor on the App Store](https://apps.apple.com/us/app/textastic-code-editor/id1049254261)
+### Home assistant
+SSH port 4005  
+IP is the Traefik ingress ip from MetalLB 
 
+### Manual
 Get longhorn volume name from the longhorn dashboard and note what node its attached to
 On the node the volume is attached to
 ```lsblk -f```
