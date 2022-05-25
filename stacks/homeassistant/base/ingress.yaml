@@ -16,3 +16,18 @@ spec:
     - name: homeassistant
       namespace: homeassistant
       port: 8123
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: homeassistant
+  namespace: homeassistant
+spec:
+  entryPoints:
+  - ssh-ha
+  routes:
+  - match: HostSNI(`*`)
+    services:
+    - name: homeassistant
+      namespace: homeassistant
+      port: 2222
