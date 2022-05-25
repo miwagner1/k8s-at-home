@@ -8,6 +8,10 @@ spec:
   repo: https://helm.traefik.io/traefik
   targetNamespace: traefik
   valuesContent: |-
+    deployment:
+      replicas: 2
+    additionalArguments:
+    - "--api.insecure"
     rbac:
       enabled: true
     providers:
@@ -39,6 +43,11 @@ spec:
       name: traefik
       tag: v2.6.1
     ports:
+      ssh-ha:
+        port: 4005
+        expose: true
+        exposedPort: 4005
+        protocol: TCP
       web:
         redirectTo: websecure
         port: 8000
