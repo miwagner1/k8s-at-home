@@ -75,6 +75,16 @@ spec:
             secretKeyRef:
               name: env-secrets
               key: USER_NAME
+        - name: DOCKER_MODS
+          valueFrom:
+            secretKeyRef:
+              name: env-secrets
+              key: DOCKER_MODS
+        - name: INSTALL_PACKAGES
+          valueFrom:
+            secretKeyRef:
+              name: env-secrets
+              key: INSTALL_PACKAGES
         volumeMounts:
         - name: data
           readOnly: false
