@@ -11,6 +11,7 @@ I am new to Kubernetes, so I imagine there are a lot of improvements left to be 
 read through https://rancher.com/docs/k3s/latest/en/installation/ and make sure you meet the installation requirements.
 
 ## install Helm 3
+I now use https://github.com/k3s-io/helm-controller to deploy my helm dependent installs which is also apart of k3s.
 
 I am going to use MetalLB as my service load balancer instead of the built in Klipper Load Balancer. I also disabled the built in Traefik deployment and use my own configuration.
 ```curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC=“--disable servicelb --disable traefik” sh -```
@@ -28,7 +29,8 @@ sudo kubectl apply -k k8s/authelia
 for kustomize deployments with helm....
 ```
 # view yaml manifest first
-kubectl kustomize --enable-helm
+kubectl kustomize --enable-helm  
+I am replacing this with https://github.com/k3s-io/helm-controller
 
 # apply to kubernetes cluster
 # 'apply' command does not have enable-helm flag

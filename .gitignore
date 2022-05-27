@@ -19,3 +19,4 @@
 /stacks/znc/overlays/production/ingress-patch.yaml
 /stacks/homeassistant/overlays/production/env.txt
 /k8s/authelia/overlays/production/env.txt
+/stacks/znc/overlays/production/env.txt
