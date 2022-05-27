@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  namespace: blocky
+  labels:
+    name: redis
+spec:
+  selector:
+    app: redis
+  ports:
+  - name: tcp
+    protocol: TCP
+    port: 6379
+    targetPort: 6379
