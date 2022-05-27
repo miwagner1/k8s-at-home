@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blocky
+  namespace: blocky
+  labels:
+    app: blocky
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: blocky
+  template:
+    metadata:
+      labels:
+        app: blocky
+    spec:
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 10
+      enableServiceLinks: false
+      containers:
+      - name: blocky
+        image: ghcr.io/0xerr0r/blocky:v0.18
+        args: ["/app/blocky", "--config", "/app/config/config.yml"]
+        ports:
+        - name: dns
+          containerPort: 53
+        - name: http
+          containerPort: 4000
+        resources:
+          limits:
+            memory: "200Mi"
+          requests:
+            memory: "50Mi"
+        volumeMounts:
+        - name: config
+          readOnly: false
+          mountPath: "/app/config"
+        imagePullPolicy: IfNotPresent
+      volumes:
+      - name: config
+        secret:
+          secretName: blocky-config

@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: blocky-tcp
+  namespace: blocky
+  annotations:
+    metallb.universe.tf/allow-shared-ip: "key-to-share-192.168.4.22"
+    metallb.universe.tf/loadBalancerIPs: "192.168.4.22"
+  labels:
+    name: blocky
+spec:
+  type: LoadBalancer
+  selector:
+    app: blocky
+  ports:
+  - name: dns
+    protocol: TCP
+    port: 53
+    targetPort: 53
+  - name: http
+    protocol: TCP
+    port: 4000
+    targetPort: 4000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: blocky-udp
+  namespace: blocky
+  annotations:
+    metallb.universe.tf/allow-shared-ip: "key-to-share-192.168.4.22"
+    metallb.universe.tf/loadBalancerIPs: "192.168.4.22"
+  labels:
+    name: blocky
+spec:
+  type: LoadBalancer
+  selector:
+    app: blocky
+  ports:
+  - name: dns
+    protocol: UDP
+    port: 53
+    targetPort: 53
