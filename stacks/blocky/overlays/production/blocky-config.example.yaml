@@ -51,7 +51,7 @@ stringData:
       password: xxxxxxxxxxxxxxxxx
       database: 0
       required: true
-      connectionAttempts: 100
+      connectionAttempts: 15
       connectionCooldown: 5s
     customDNS:
       customTTL: 1h
