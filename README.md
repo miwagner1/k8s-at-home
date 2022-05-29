@@ -6,6 +6,14 @@ Depnds on longhorn for storage, traefik for the ingress and cert-manager to mana
 
 I am new to Kubernetes, so I imagine there are a lot of improvements left to be done with the configurations.
 
+## Air-Gap so we don’t need the internet when the nodes are rebooted for updates /loose power etc
+(Work in progress)  
+**To do:**  
+Docker Registry on each node  
+Convert helm carts to manafests with the template command (include CRDs)  
+Airgap install k3s  
+Use https://hub.docker.com/r/joxit/docker-registry-ui to help us manage the registries 
+
 
 ## Install k3s
 read through https://rancher.com/docs/k3s/latest/en/installation/ and make sure you meet the installation requirements.
