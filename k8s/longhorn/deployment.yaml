@@ -11,5 +11,8 @@ spec:
   version: v1.2.4
   valuesContent: |-
     persistence:
-      defaultClassReplicaCount: 2
+      defaultClassReplicaCount: 3
       reclaimPolicy: Retain
+    defaultSettings:
+      defaultDataLocality: best-effort
+      replicaAutoBalance: best-effort
