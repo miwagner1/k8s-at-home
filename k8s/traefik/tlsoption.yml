@@ -2,7 +2,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: TLSOption
 metadata:
   name: default
-  namespace: traefik
+  namespace: default
 spec:
   cipherSuites:
   - TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256
