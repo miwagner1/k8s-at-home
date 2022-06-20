@@ -1,0 +1,101 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: authelia-config
+  namespace: authelia
+stringData:
+  configuration.yml: |
+    server:
+      host: 0.0.0.0
+      port: 9091
+      read_buffer_size: 4096
+      write_buffer_size: 4096
+    log:
+      level: info
+    theme: auto
+    jwt_secret: MCIAHUI73rjisdfv3807gbnS8iw4t8adsgqer8923948rtuvzsdvwn3etg
+    default_redirection_url: https://vmnode.com
+    totp:
+      disable: false
+      issuer: vmnode.com
+      period: 30
+      skew: 1
+    duo_api:
+      hostname: api-1876c11d.duosecurity.com
+      integration_key: DIXIST1JG5DYUKSY51GX
+      secret_key: OUvVfVC5iBOjEDxsvfxEggmtHhp68Z2qU8nrZuNP
+      enable_self_enrollment: false
+    webauthn:
+      disable: true
+    authentication_backend:
+      disable_reset_password: false
+      file:
+        path: /config/users_database.yml
+        password:
+          algorithm: argon2id
+          iterations: 1
+          key_length: 32
+          salt_length: 16
+          memory: 512
+          parallelism: 8
+    access_control:
+      default_policy: deny
+      rules:
+        - domain:
+          - vmnode.com
+          - "*.vmnode.com"
+          networks:
+          - 192.168.4.0/22
+          policy: bypass
+        - domain:
+          - vmnode.com
+          - "*.vmnode.com"
+          policy: two_factor
+    session:
+      name: authelia_session
+      secret: avmsadvkjrvnu3478wfousvwefguwrg87vuoneuioq3gaegbuohergaergmyuik
+      expiration: 4h
+      inactivity: 45m
+      remember_me_duration: 1M
+      domain: vmnode.com
+      redis:
+        host: redis.authelia.svc.cluster.local
+        port: 6379
+        # This secret can also be set using the env variables AUTHELIA_SESSION_REDIS_PASSWORD
+        password: WHVEzBuUCxBgRs3t3cUfYFiL
+        # This is the Redis DB 
+        database_index: 0
+    regulation:
+      max_retries: 3
+      find_time: 2m
+      ban_time: 5m
+    storage:
+      encryption_key: vwbhjlf23i47fgebovbqiy3rgqi367gfqervalfvnlasvlqe7i5
+      mysql:
+        host: mariadb.authelia.svc.cluster.local
+        port: 3306
+        database: authelia
+        username: authelia
+        password: APNNthFqjo6iocN2aDBn2rzdEiXFsrsZwscqNzknstowcntVriWZ
+    notifier:
+      disable_startup_check: false
+      filesystem:
+        filename: /tmp/notification.txt
+
+  users_database.yml: |
+    users:
+      michael:
+        displayname: "Michael Wagner"
+        password: "$argon2id$v=19$m=65536,t=1,p=8$aW5KR2U3ZEkzNXBQUnRCSw$iC5/w/F55gv+N7nH09+qaWZpeMsYy1m03X2k6YSaVys"
+        email: miwagner1@icloud.com
+        groups:
+          - admins
+          - dev
+# For password hash generation use https://argon2.online/
+# Choose params:
+# type: `argon2id`
+# Memory cost: `128`
+# hash length: `32`
+# parallelism: `8`
+# iterations: `2` 
+# Mount files that are going to be modified by authelia in /tmp instead of /config default path

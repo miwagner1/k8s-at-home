@@ -1,0 +1,75 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: blocky-config
+  namespace: blocky
+stringData:
+  config.yml: |
+    upstream:
+      default:
+        - 1.1.1.1
+        - 8.8.8.8
+        - 9.9.9.9
+    blocking:
+      blackLists:
+        ads:
+          - https://adaway.org/hosts.txt
+          - https://v.firebog.net/hosts/Admiral.txt
+          - https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
+          - https://v.firebog.net/hosts/AdguardDNS.txt
+        tracking:
+          - https://v.firebog.net/hosts/Easyprivacy.txt
+          - https://v.firebog.net/hosts/Prigent-Ads.txt
+          - https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.2o7Net/hosts
+          - https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt
+          - https://hostfiles.frogeye.fr/firstparty-trackers-hosts.txt
+        malicious:
+          - https://raw.githubusercontent.com/DandelionSprout/adfilt/master/Alternate%20versions%20Anti-Malware%20List/AntiMalwareHosts.txt
+          - https://osint.digitalside.it/Threat-Intel/lists/latestdomains.txt
+          - https://s3.amazonaws.com/lists.disconnect.me/simple_malvertising.txt
+          - https://v.firebog.net/hosts/Prigent-Crypto.txt
+          - https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Risk/hosts
+          - https://bitbucket.org/ethanr/dns-blacklists/raw/8575c9f96e5b4a1308f2f12394abd86d0927a4a0/bad_lists/Mandiant_APT1_Report_Appendix_D.txt
+          - https://phishing.army/download/phishing_army_blocklist_extended.txt
+          - https://gitlab.com/quidsup/notrack-blocklists/raw/master/notrack-malware.txt
+        other:
+          - https://zerodot1.gitlab.io/CoinBlockerLists/hosts_browser
+      whiteLists:
+        ads:
+          - https://raw.githubusercontent.com/anudeepND/whitelist/master/domains/whitelist.txt
+          - https://raw.githubusercontent.com/anudeepND/whitelist/master/domains/optional-list.txt
+      clientGroupsBlock:
+        default:
+          - ads
+          - tracking
+          - malicious
+          - other
+    port: 53
+    httpPort: 4000
+    redis:
+      address: redis.blocky.svc.cluster.local:6379
+      password: rDPuvKBBnAAHotHADhm9R7AC
+      database: 0
+      required: true
+      connectionAttempts: 100
+      connectionCooldown: 5s
+    customDNS:
+      customTTL: 1h
+      mapping:
+        changedetection.vmnode.com: 192.168.4.20
+        homeassistant.vmnode.com: 192.168.4.20
+        home.vmnode.com: 192.168.4.20
+        kubenav.vmnode.com: 192.168.4.20
+        login.vmnode.com: 192.168.4.20
+        longhorn.vmnode.com: 192.168.4.20
+        manga.vmnode.com: 192.168.4.20
+        network.vmnode.com: 192.168.4.20
+        node1.vmnode.com: 192.168.4.16
+        node2.vmnode.com: 192.168.4.15
+        node3.vmnode.com: 192.168.4.17
+        scrypted.vmnode.com: 192.168.4.20
+        thelounge.vmnode.com: 192.168.4.20
+        traefik.vmnode.com: 192.168.4.20
+        vpn.vmnode.com: 192.168.4.21
+        whoami.vmnode.com: 192.168.4.20
+        znc.vmnode.com: 192.168.4.20
