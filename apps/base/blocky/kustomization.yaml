@@ -4,8 +4,8 @@ resources:
 - namespace.yaml
 - blocky.yaml
 - blocky-svc.yaml
-- redis.yml
-- redis-svc.yml
+- redis.yaml
+- redis-svc.yaml
 images:
 - name: ghcr.io/0xerr0r/blocky
   newTag: "v0.18"
