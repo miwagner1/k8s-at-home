@@ -22,3 +22,5 @@
 /stacks/znc/overlays/production/env.txt
 /stacks/blocky/overlays/production/env.txt
 /stacks/blocky/overlays/production/blocky-config.yaml
+/apps/production/blocky/blocky-config.yaml
+/apps/production/blocky/env.txt
