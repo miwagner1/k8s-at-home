@@ -24,3 +24,4 @@
 /stacks/blocky/overlays/production/blocky-config.yaml
 /apps/production/blocky/blocky-config.yaml
 /apps/production/blocky/env.txt
+/apps/production/blocky/env.yaml

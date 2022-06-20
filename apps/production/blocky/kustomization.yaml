@@ -2,10 +2,5 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - blocky-config-encrypted.yaml
+  - env-encrypted.yaml
   - ../../base/blocky
-secretGenerator:
-- name: env-secrets
-  namespace: blocky
-  envs:
-  - env-encrypted.txt
-  type: Opaque
