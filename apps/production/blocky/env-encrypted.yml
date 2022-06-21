@@ -1,0 +1,31 @@
+kind: Secret
+apiVersion: v1
+metadata:
+    name: env-secrets
+    namespace: blocky
+data:
+    PGID: ENC[AES256_GCM,data:urPhcwTJpAs=,iv:yEgmyeDO4O3Sb+SchxtaMNGG6PO2TS1iDDJCUfRURyw=,tag:gzIOB3/Fsvi9/Y3Irfm2/A==,type:str]
+    PUID: ENC[AES256_GCM,data:9IvKRpExGBI=,iv:QzR3BnmJJoaHhPYAbQddXDRrPTbEYnVumaJuxDZkoXo=,tag:zy+mC3TXsauR4TPUpKEGeg==,type:str]
+    REDIS_PASS: ENC[AES256_GCM,data:5pSMk3rb3tTc2l6AY3cRCtixVxKKUydv44XVA6syYa4=,iv:h5Qp9cEznQlssK07WRX8wnX5U0CBDyaNHqGSv6nzr7Q=,tag:uqfqKS7hKKOkboDLtI9kqg==,type:str]
+    TZ: ENC[AES256_GCM,data:dzWYFBzJE0/mKKewKs8XKF3JU9s=,iv:u23wyjtxNyli60SKB0L2XLcH2azZLXd4WwTWQlFd5JU=,tag:c2FdQ1LrlED+yzf8qFd7/A==,type:str]
+type: Opaque
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1fhjsfq88myqpznmhchryult7pla90fmpm8h3gd0mla6gpc4ug5kscvaxd7
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBUNytkaUVvampESm1GQlc3
+            MC9nRjlkYStMZnBPWk1QN2xuZVZaYi8xMnhRCmVhK0EzMEgyRkg5UGRoK2N6WUpj
+            RTM3RE1Na3RFTSs4S1NzS0NReUgrRXcKLS0tIEliVU5ZTFdZT21ncjlud2lPYnF1
+            ZlJiTUFXV0hBRVovZXhzdTZ0TXczeU0KISi4C+UTdY0jsNQdPzgJ9ASddFXu9ofP
+            IfaZXytPFvf0Rj03N32Xo11ZaPN9gINVUDMdY8veNGXxyjL4Ugsg0Q==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2022-06-21T00:00:20Z"
+    mac: ENC[AES256_GCM,data:VNveHX2C6xunXUGt03fyuLfAfZAUw8+/ZHfo1A10wt3SrypJ30flDqk9IldZjowW9M/XrIabb/Bj96/cSurYnAjef1DXz1/S66FWjDInBQTvGPu65eaBItCIyHs3DyOxHR/WRfJToPTORqnXRDwwOvQQNdbBYkSvt1OdPi5fyHs=,iv:8ekuAT7RjDBtwSwy58uJ80ilvS1s1RiYdHdBGRc1dpI=,tag:6MNs0EHwLO/AE2JSQo6HmA==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.7.3
