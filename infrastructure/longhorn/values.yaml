@@ -1,0 +1,6 @@
+persistence:
+  defaultClassReplicaCount: 3
+  reclaimPolicy: Retain
+defaultSettings:
+  defaultDataLocality: best-effort
+  replicaAutoBalance: best-effort
